@@ -1,0 +1,57 @@
+# Onboard checklist — {{ system }}
+
+Gates measure evidence completeness, not residual risk or authorization.
+
+| Field | Value |
+|---|---|
+| System | {{ system }} |
+| Overlay | {{ overlay_id }} |
+| Generated | {{ generated_at }} |
+| Git commit | {{ git_commit }} |
+
+## Gate result
+
+**{% if gates_passed %}passed{% else %}failed{% endif %}**
+
+{% if failures %}
+{% for item in failures -%}
+- {{ item }}
+{% endfor %}
+{% else %}
+No completeness failures.
+{% endif %}
+
+## Controls
+
+| ID | Status (declared) | Evidence | Findings (C/H/M/L) |
+|---|---|---|---|
+{% for control in controls -%}
+| {{ control.id }} | {{ control.status }} | {{ evidence_cell(control) }} | {{ finding_cell(control.id) }} |
+{% endfor %}
+
+## Top findings
+
+{% if top_findings %}
+| Severity | Title | Target |
+|---|---|---|
+{% for item in top_findings -%}
+| {{ item.severity.value }} | {{ item.title }} | {{ item.target }} |
+{% endfor %}
+{% else %}
+None.
+{% endif %}
+
+## Network files
+
+- data-flow: {{ "present" if network["data-flow"] else "missing" }}
+- ppsm: {{ "present" if network["ppsm"] else "missing" }}
+
+## How to zip / attach
+
+This pack is evidence, not an authorization decision.
+
+```
+onboard zip --pack {{ pack_dir }} --out onboard-pack.zip
+```
+
+Attach `onboard-pack.zip` to the ISSM ticket or eMASS artifact upload. There is no eMASS API in v0.1.

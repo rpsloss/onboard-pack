@@ -53,10 +53,16 @@ artifacts/network/ppsm.yaml
 artifacts/inheritance.yaml
 ```
 
-## After it is built
+## Install and run
+
+Python 3.11+ (3.12 used in development).
 
 ```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
 pip install -e ".[dev]"
+pytest -q
+
 onboard pack \
   --input examples/fixtures/app-a \
   --overlay overlays/example.yaml \
@@ -64,7 +70,11 @@ onboard pack \
   --out /tmp/onboard-out
 onboard validate --pack /tmp/onboard-out
 onboard zip --pack /tmp/onboard-out --out /tmp/onboard-pack.zip
+onboard diff --from /tmp/onboard-out --to /tmp/onboard-out
 ```
+
+`app-a` exits 0 (HIGH CVE is allowed; gates are completeness).
+`examples/fixtures/app-a-missing-sbom` exits 2 (owned CM-8/SR-3 lack an SBOM).
 
 ## Roadmap (do not implement until v0.1 works)
 
