@@ -1,0 +1,35 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2026-09-11T00:00:00.000000000Z",
+  "ArtifactName": "app-a:0.1.0",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "debian",
+      "Name": "12.5"
+    },
+    "ImageID": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "RepoTags": ["app-a:0.1.0"]
+  },
+  "Results": [
+    {
+      "Target": "app-a:0.1.0 (debian 12.5)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2024-1234",
+          "PkgName": "pkg",
+          "PkgID": "pkg@1.2.3",
+          "InstalledVersion": "1.2.3",
+          "FixedVersion": "1.2.4",
+          "Severity": "HIGH",
+          "Title": "pkg: example high-severity fixture",
+          "Description": "Synthetic fixture finding for onboard-pack tests. Not a real vulnerability.",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-1234",
+          "References": ["https://nvd.nist.gov/vuln/detail/CVE-2024-1234"]
+        }
+      ]
+    }
+  ]
+}

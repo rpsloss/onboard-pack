@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onboard-pack"
+version = "0.1.0"
+description = "Compile DoW/DoD application-onboarding evidence packs from CI artifacts"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "typer",
+  "pydantic",
+  "pyyaml",
+  "jinja2",
+  "jsonschema",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+onboard = "onboard_pack.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

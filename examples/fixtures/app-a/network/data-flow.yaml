@@ -1,0 +1,14 @@
+system: app-a
+flows:
+  - id: flow-user-https
+    from: user
+    to: app-a
+    protocol: https
+    port: 443
+    dataTypes: [user-input]
+  - id: flow-app-db
+    from: app-a
+    to: example-db
+    protocol: tcp
+    port: 5432
+    dataTypes: [application-data]

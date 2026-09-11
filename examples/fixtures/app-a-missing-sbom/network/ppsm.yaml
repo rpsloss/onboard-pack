@@ -1,0 +1,12 @@
+system: app-a
+ports:
+  - port: 443
+    protocol: tcp
+    service: https
+    direction: inbound
+    justification: User access to the application
+  - port: 5432
+    protocol: tcp
+    service: postgresql
+    direction: outbound
+    justification: Application database

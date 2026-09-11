@@ -1,0 +1,23 @@
+system: app-a
+inheritsFrom: example-enclave
+controls:
+  CM-6:
+    status: inherited
+    provider: example-enclave
+    note: Host STIG inherited from enclave gold image
+  CA-7:
+    status: shared
+    provider: example-cssp
+    note: CSSP ConMon plus app pipeline scans
+  CM-2:
+    status: na
+    note: Example app has no IaC in v0.1 fixtures
+  SA-15:
+    status: na
+    note: Example app has no SAST fixture; not in scope
+  AC-4:
+    status: owned
+  SC-7:
+    status: owned
+  CM-8:
+    status: owned

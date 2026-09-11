@@ -1,0 +1,75 @@
+# Copy to .github/workflows/onboard.yml in an application repo.
+# Runs scanners, writes artifacts/, compiles an onboard pack.
+# Presence gates only. Does not claim ATO or residual-risk acceptance.
+name: onboard-pack
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build application image
+        run: |
+          # Replace with the app's real image build.
+          echo "IMAGE=${IMAGE:-app:ci}" >> "$GITHUB_ENV"
+
+      - name: Generate CycloneDX SBOM (Syft)
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: artifacts/sbom/sbom.json
+
+      - name: Trivy filesystem + image scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          format: json
+          output: artifacts/scans/trivy.json
+          exit-code: "0"
+          # Policy-as-code (KEV, waivers) comes later. Do not fail the
+          # compiler job on HIGH; onboard --strict handles CRITICAL.
+
+      - name: Collect network + inheritance worksheets
+        run: |
+          mkdir -p artifacts/network
+          cp network/data-flow.yaml artifacts/network/data-flow.yaml
+          cp network/ppsm.yaml artifacts/network/ppsm.yaml
+          cp inheritance.yaml artifacts/inheritance.yaml
+
+      - name: Install onboard-pack
+        run: python -m pip install --quiet "onboard-pack"
+
+      - name: Compile evidence pack
+        run: |
+          onboard pack \
+            --input artifacts \
+            --overlay overlays/example.yaml \
+            --inheritance artifacts/inheritance.yaml \
+            --out pack-out
+
+      - name: Zip pack
+        run: onboard zip --pack pack-out --out onboard-pack.zip
+
+      - name: Upload pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: onboard-pack
+          path: |
+            pack-out
+            onboard-pack.zip

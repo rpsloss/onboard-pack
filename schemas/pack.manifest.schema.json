@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://castleridge.local/schemas/onboard-pack-manifest-0.1.0.json",
+  "title": "Onboard pack manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "toolVersion",
+    "source",
+    "overlayId",
+    "overlayPath",
+    "inheritancePath",
+    "artifactDigest",
+    "inputs",
+    "counts",
+    "gates"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "0.1.0" },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "toolVersion": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "required": ["inputDir"],
+      "properties": {
+        "inputDir": { "type": "string" },
+        "gitCommit": { "type": ["string", "null"] },
+        "gitDirty": { "type": ["boolean", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "overlayId": { "type": "string", "minLength": 1 },
+    "overlayPath": { "type": "string", "minLength": 1 },
+    "inheritancePath": { "type": "string", "minLength": 1 },
+    "artifactDigest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "kind", "sha256", "bytes"],
+        "properties": {
+          "path": { "type": "string" },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "sbom",
+              "container-scan",
+              "iac-scan",
+              "sast",
+              "stig",
+              "data-flow",
+              "ppsm",
+              "other"
+            ]
+          },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "bytes": { "type": "integer", "minimum": 0 }
+        },
+        "additionalProperties": true
+      }
+    },
+    "counts": {
+      "type": "object",
+      "required": ["findings", "controls"],
+      "properties": {
+        "findings": {
+          "type": "object",
+          "required": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO", "UNKNOWN"],
+          "properties": {
+            "CRITICAL": { "type": "integer", "minimum": 0 },
+            "HIGH": { "type": "integer", "minimum": 0 },
+            "MEDIUM": { "type": "integer", "minimum": 0 },
+            "LOW": { "type": "integer", "minimum": 0 },
+            "INFO": { "type": "integer", "minimum": 0 },
+            "UNKNOWN": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        "controls": {
+          "type": "object",
+          "required": ["inherited", "owned", "shared", "na", "missing-evidence"],
+          "properties": {
+            "inherited": { "type": "integer", "minimum": 0 },
+            "owned": { "type": "integer", "minimum": 0 },
+            "shared": { "type": "integer", "minimum": 0 },
+            "na": { "type": "integer", "minimum": 0 },
+            "missing-evidence": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "object",
+      "required": ["passed", "failures"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "failures": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

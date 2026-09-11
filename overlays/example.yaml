@@ -1,0 +1,44 @@
+id: example-app-overlay
+title: Example application overlay
+version: "0.1"
+controls:
+  - id: CM-8
+    title: System Component Inventory
+    family: CM
+    requiredEvidence: [sbom]
+  - id: RA-5
+    title: Vulnerability Monitoring and Scanning
+    family: RA
+    requiredEvidence: [container-scan]
+  - id: SI-2
+    title: Flaw Remediation
+    family: SI
+    requiredEvidence: [container-scan]
+  - id: CM-2
+    title: Baseline Configuration
+    family: CM
+    requiredEvidence: [iac-scan]
+  - id: CM-6
+    title: Configuration Settings
+    family: CM
+    requiredEvidence: [stig]
+  - id: CA-7
+    title: Continuous Monitoring
+    family: CA
+    requiredEvidence: [container-scan]
+  - id: SA-15
+    title: Development Process, Standards, and Tools
+    family: SA
+    requiredEvidence: [sast]
+  - id: SR-3
+    title: Supply Chain Controls
+    family: SR
+    requiredEvidence: [sbom]
+  - id: AC-4
+    title: Information Flow Enforcement
+    family: AC
+    requiredEvidence: [data-flow]
+  - id: SC-7
+    title: Boundary Protection
+    family: SC
+    requiredEvidence: [ppsm]
