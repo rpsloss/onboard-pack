@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://castleridge.local/schemas/onboard-pack-manifest-0.1.0.json",
+  "$id": "https://github.com/rpsloss/onboard-pack/schemas/pack.manifest.schema.json",
   "title": "Onboard pack manifest",
   "type": "object",
   "required": [
